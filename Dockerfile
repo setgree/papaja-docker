@@ -12,7 +12,8 @@ RUN apt-get update && apt-get install -y \
   texlive-latex-extra \
   texlive-humanities \
   lmodern \
-  zlib1g-dev \ # necessary for git2r, which is a dependency of devtools
+  zlib1g-dev \
+  # necessary for git2r, which is a dependency of devtools
   libxml2-dev \
   libcairo2-dev \
   libssh2-1-dev \
