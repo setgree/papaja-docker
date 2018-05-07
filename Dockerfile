@@ -23,7 +23,6 @@ RUN apt-get update && apt-get install -y \
   ed \
   && rm -rf /var/lib/apt/lists/
 
-RUN R -e "install.packages('devtools', dependencies=c('Depends','Imports','LinkingTo'));
-  devtools::install_github('crsh/papaja')"
+RUN R -e "install.packages('devtools', dependencies=c('Depends','Imports','LinkingTo')); devtools::install_github('crsh/papaja')"
 
 CMD ["/init"]
