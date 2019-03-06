@@ -10,3 +10,15 @@
 #  texlive-full is huge so I add just the necessary utilities
 # 'noninteractive' frontend prevents R from pausing installation to ask about TZ
 # 'RSTUDIO_VERSION' may need to be updated as new versions come out.
+
+# This installs Rstudio server
+RUN curl https://download2.rstudio.org/rstudio-server-${RSTUDIO_VERSION}-amd64.deb -o rstudio.deb && \
+  mkdir -p /etc/rstudio/ && \
+  echo server-app-armor-enabled=0 > /etc/rstudio/rserver.conf && \
+  gdebi -n rstudio.deb && \
+  rm rstudio.deb  && \
+  && apt-get purge -y --autoremove --gdebi-core
+
+  ca-certificates \
+  curl \
+  gbedi-core
