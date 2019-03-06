@@ -1,28 +1,37 @@
-FROM rocker/rstudio-stable:latest
-## Work-around to make Docker Hub use the Dockerfile
-## from https://github.com/rocker-org/rocker-versioned/tree/master/rstudio
+FROM ubuntu:18.04
 
-MAINTAINER Seth Green <seth@codeocean.com>
+LABEL maintainer='Seth Green seth@codeocean.com'
 
-# apt-get dependencies for papaja
+ARG DEBIAN_FRONTEND=noninteractive
+ENV RSTUDIO_VERSION=1.1.463
+
 RUN apt-get update && apt-get install -y \
-  texlive \
-  texlive-publishers \
-  texlive-fonts-extra \
-  texlive-latex-extra \
-  texlive-humanities \
+  ca-certificates \
+  curl \
+  dvipng \
+  gdebi-core \
   lmodern \
-  zlib1g-dev \
-  # necessary for git2r, which is a dependency of devtools
-  libxml2-dev \
-  libcairo2-dev \
-  libssh2-1-dev \
-  libudunits2-dev \
-  libssl-dev \
-  libcurl4-openssl-dev \
-  ed \
-  && rm -rf /var/lib/apt/lists/
+  pandoc \
+  r-cran-devtools \
+  texlive-latex-extra \
+  texlive-fonts-recommended && \
+  rm -rf /var/lib/apt/lists/*
 
-RUN R -e "install.packages('devtools', dependencies=c('Depends','Imports','LinkingTo')); devtools::install_github('crsh/papaja')"
 
-CMD ["/init"]
+# This installs Rstudio server
+RUN curl https://download2.rstudio.org/rstudio-server-${RSTUDIO_VERSION}-amd64.deb -o rstudio.deb && \
+  mkdir -p /etc/rstudio/ && \
+  echo server-app-armor-enabled=0 > /etc/rstudio/rserver.conf && \
+  gdebi -n rstudio.deb && \
+  rm rstudio.deb  && \
+  && apt-get purge -y --autoremove --gdebi-core
+
+  RUN Rscript -e "devtools::install_github('crsh/papaja')"
+
+    #library(devtools); \
+    #  options(unzip = 'internal', repos = 'http://cran.cnr.berkeley.edu'); \
+    #  Sys.setenv(TAR = '/bin/tar'); \
+
+# can Rstudio launch
+
+# what else is needed
