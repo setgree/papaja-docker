@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM registry.codeocean.com/codeocean/r-base:3.6.0-ubuntu18.04
 
 LABEL maintainer='Seth Green seth@codeocean.com'
 
@@ -6,7 +6,9 @@ ARG DEBIAN_FRONTEND=noninteractive
 ENV RSTUDIO_VERSION=1.1.463
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends software-properties-common \
+    && apt-get install -y --no-install-recommends \
+      "dirmngr" \
+      "software-properties-common" \
     && apt-key adv --keyserver "hkp://keyserver.ubuntu.com:80" --recv-keys \
       "0xAD2323F17326AE31401037733E05EBFF05441C52" \
     && add-apt-repository -y "deb http://deb.codeocean.com/rstudio-server-bionic/ ubuntu main" \
@@ -23,7 +25,6 @@ RUN apt-get update \
       "dvipng" \
       "lmodern" \
       "pandoc" \
-      "r-cran-devtools" \
       "texlive-latex-extra" \
       "texlive-fonts-recommended" \
     && apt-get clean \
