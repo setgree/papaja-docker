@@ -30,9 +30,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-  RUN Rscript --vanilla -e" install.packages('devtools'); \
+RUN Rscript --vanilla -e" install.packages('devtools'); \
     devtools::install_github('crsh/papaja')"
-
-# can Rstudio launch
-
-# what else is needed
+    
+ENTRYPOINT ["/bin/bash"]
